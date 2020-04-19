@@ -11,7 +11,7 @@
 <body>
 <h2>聊天室</h2>
 <form method="POST" action="<c:url value="/room"/>">
-    Username: <input type="text" name="username"/><br/>
+    用户名: <input type="text" name="username"/><br/>
     <c:choose>
         <c:when test="${error == 'empty'}"><i>用户名不能为空</i></c:when>
         <c:when test="${error == 'illegal'}"><i>用户名只能包含数字、字母及下划线</i></c:when>

@@ -19,8 +19,8 @@
     </div>
 </div>
 <div id="chat-room-waiting">
-    <div class="alert-header"><h3>Please Wait...</h3></div>
-    <div class="alert-body" id="chat-room-waiting-body">Connecting...</div>
+    <div class="alert-header"><h3>连接中...</h3></div>
+    <div class="alert-body" id="chat-room-waiting-body">请等待...</div>
 </div>
 <div id="chat-room-message-show">
     <c:forEach items="${chatRepository}" var="chats">
@@ -31,8 +31,8 @@
 </div>
 <div id="chat-room-message-button">
     <input type="text" id="chat-room-message-text"/>
-    <button id="chat-room-message-send" class="button" onclick="sendMessage();">send</button>
-    <button id="chat-room-message-disconnect" class="button" onclick="disconnect();">disconnect</button>
+    <button id="chat-room-message-send" class="button" onclick="sendMessage();">发送</button>
+    <button id="chat-room-message-disconnect" class="button" onclick="disconnect();">离线</button>
     <div id="chat-room-message-send-log"><i>消息不能为空</i></div>
 </div>
 <script type="text/javascript" lang="javascript">
@@ -48,14 +48,12 @@
         let decoder = new TextDecoder("utf-8");
         let server = null;
 
-        if (!String.prototype.encodeHTML) {
-            String.prototype.encodeHTML = function () {
-                return this.replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&apos;');
-            }
+        String.prototype.encodeHTML = function () {
+            return this.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;');
         }
 
         let log = function (username, message, timestamp) {
@@ -67,12 +65,6 @@
                     .addClass('chat-room-message')
                     .text(message))
                 .append($('<br/>'));
-        }
-
-        let sendToHome = function () {
-            let button = $('<input>').attr('type', 'submit');
-            $('body').append($('<div>').append($('<form>').attr('method', 'GET').attr('action', '/ChatRoom').append(button)));
-            button.click();
         }
 
         if (!("WebSocket" in window)) {
@@ -152,6 +144,12 @@
                     error.show();
                 }
             }
+        }
+
+        sendToHome = function () {
+            let button = $('<input>').attr('type', 'submit');
+            $('body').append($('<div>').append($('<form>').attr('method', 'GET').attr('action', '/ChatRoom').append(button)));
+            button.click();
         }
 
         disconnect = function () {
